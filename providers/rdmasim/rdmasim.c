@@ -32,8 +32,17 @@ static int rdmasim_query_device(struct ibv_context *context,
 	return 0;
 }
 
+static int rdmasim_query_port(struct ibv_context *context, uint8_t port,
+			      struct ibv_port_attr *port_attr)
+{
+	struct ibv_query_port cmd;
+
+	return ibv_cmd_query_port(context, port, port_attr, &cmd, sizeof(cmd));
+}
+
 static const struct verbs_context_ops rdmasim_ctx_ops = {
 	.query_device = rdmasim_query_device,
+	.query_port = rdmasim_query_port,
 };
 
 static struct verbs_context *rdmasim_alloc_context(struct ibv_device *ibv_dev,
